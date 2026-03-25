@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="IMG_5514.jpg">
+    <title>For Similoluwa Omo Ifedayo ✨</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #1e40af;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #2d3748;
+            position: relative;
+        }
+
+        /* Background Image Layer */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .background-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('./IMG_5380.jpg');
+            background-size: contain;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -1;
+        }
+
+        .background-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.85) 0%, rgba(29, 78, 216, 0.9) 100%);
+            z-index: 1;
+        }
+
+        /* Start Screen */
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .start-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('./IMG_5340.jpg');
+            background-size: contain;
+            background-position: center;
+            z-index: -1;
+        }
+
+        .start-screen::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.92) 0%, rgba(30, 58, 138, 0.95) 100%);
+            z-index: 0;
+        }
+
+        .start-screen.hidden {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        .start-content {
+            text-align: center;
+            color: white;
+            padding: 2rem 1.5rem;
+            background: rgba(30, 64, 175, 0.4);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 2;
+            max-width: 90%;
+            width: 600px;
+        }
+
+        .start-content h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+            animation: fadeInUp 1s ease;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        /* Typewriter Animation */
+        .typewriter-container {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .typewriter {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 400;
+            color: white;
+            border-right: 3px solid white;
+            padding-right: 5px;
+            animation: blink 0.7s infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        @keyframes blink {
+            0%, 100% { border-color: white; }
+            50% { border-color: transparent; }
+        }
+
+        .start-content .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.3s both;
+            line-height: 1.4;
+        }
+
+        .music-button {
+            background: white;
+            color: #1e40af;
+            border: none;
+            padding: clamp(0.9rem, 2vw, 1.2rem) clamp(2rem, 4vw, 3rem);
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease 0.6s both, pulse 2s ease-in-out 2s infinite;
+        }
+
+        .music-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            background: #f0f9ff;
+        }
+
+        /* Letter Selection Screen */
+        .letter-selection {
+            display: none;
+            min-height: 100vh;
+            padding: clamp(1rem, 3vw, 2rem);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .letter-selection.active {
+            display: flex;
+        }
+
+        .letter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: clamp(1rem, 2vw, 2rem);
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: clamp(1rem, 2vw, 2rem);
+        }
+
+        .letter-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2vw, 2rem);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .letter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .letter-card:hover::before {
+            left: 100%;
+        }
+
+        .letter-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.5);
+            border-color: #3b82f6;
+        }
+
+        .letter-card.unlocked {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .letter-card.unlocked .letter-number {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .letter-card.locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .letter-number {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 300;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .letter-title {
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* Letter Content Screen */
+        .letter-content {
+            display: none;
+            min-height: 100vh;
+            padding: clamp(1rem, 3vw, 2rem);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .letter-content.active {
+            display: flex;
+        }
+
+        .letter-container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            padding: clamp(1.5rem, 4vw, 3rem);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.6s ease;
+            position: relative;
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            margin: auto;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #bfdbfe;
+        }
+
+        .letter-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 300;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .letter-header .date {
+            color: #3b82f6;
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+            font-weight: 500;
+        }
+
+        .letter-body {
+            line-height: 1.8;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            color: #1e293b;
+            margin-bottom: 2rem;
+        }
+
+        .letter-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .letter-image {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.3);
+            border: 3px solid #bfdbfe;
+        }
+
+        .letter-footer {
+            text-align: right;
+            font-style: italic;
+            color: #3b82f6;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #bfdbfe;
+            font-weight: 500;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            border: none;
+            padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            font-weight: 500;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
+            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+        }
+
+        /* Final Screen */
+        .final-screen {
+            display: none;
+            min-height: 100vh;
+            padding: clamp(1rem, 3vw, 2rem);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .final-screen::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/mnt/user-data/uploads/IMG_5380.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        .final-screen::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.92) 0%, rgba(30, 58, 138, 0.95) 100%);
+            z-index: 0;
+        }
+
+        .final-screen.active {
+            display: flex;
+        }
+
+        .final-content {
+            max-width: 90%;
+            width: 800px;
+            color: white;
+            animation: fadeInUp 1s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .final-content p {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            text-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .final-message {
+            background: rgba(30, 64, 175, 0.5);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: clamp(1.5rem, 4vw, 3rem);
+            margin-top: 3rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            bottom: clamp(1rem, 2vw, 2rem);
+            right: clamp(1rem, 2vw, 2rem);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50px;
+            padding: clamp(0.7rem, 1.5vw, 1rem) clamp(1rem, 2vw, 1.5rem);
+            box-shadow: 0 5px 20px rgba(30, 64, 175, 0.4);
+            display: none;
+            align-items: center;
+            gap: clamp(0.5rem, 1vw, 1rem);
+            z-index: 999;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .music-control.active {
+            display: flex;
+        }
+
+        .music-toggle {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            border: none;
+            width: clamp(35px, 5vw, 40px);
+            height: clamp(35px, 5vw, 40px);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .music-info {
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            color: #1e40af;
+            font-weight: 500;
+        }
+
+        /* Mobile Specific Adjustments */
+        @media (max-width: 768px) {
+            .letter-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+
+            .background-overlay::before,
+            .start-screen::before,
+            .final-screen::before {
+                background-attachment: scroll;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .start-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .typewriter-container {
+                min-height: 60px;
+            }
+
+            .letter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+
+    <!-- Start Screen -->
+    <div class="start-screen" id="startScreen">
+        <div class="start-content">
+            <div class="typewriter-container">
+                <span class="typewriter" id="typewriter"></span>
+            </div>
+            <p class="subtitle">This is something that felt truly special for me, I hope you feel the same...</p>
+            <button class="music-button" id="musicButton">🎵 Play Music</button>
+        </div>
+    </div>
+
+    <!-- Letter Selection Screen -->
+    <div class="letter-selection" id="letterSelection">
+        <div class="letter-grid" id="letterGrid">
+            <!-- Letters will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Letter Content Screen -->
+    <div class="letter-content" id="letterContent">
+        <div class="letter-container">
+            <div class="letter-header">
+                <h2 id="letterTitle">Letter 1</h2>
+                <p class="date" id="letterDate">A moment in time...</p>
+            </div>
+            <div class="letter-body" id="letterBody">
+                <!-- Letter content will be inserted here -->
+            </div>
+            <button class="back-button" id="backButton">← Back to letters</button>
+        </div>
+    </div>
+
+    <!-- Final Screen -->
+    <div class="final-screen" id="finalScreen">
+        <div class="final-content">
+            <h1>✨ LIGHT ✨</h1>
+            <div class="final-message">
+                <p>Seven letters. Seven times I said it.</p>
+                <p>But the truth is, I could say it seven thousand times and it still wouldn't be enough.</p>
+                <p style="font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 2rem; font-weight: 400;">Similoluwa is amazing.</p>
+                <p style="margin-top: 3rem; font-size: clamp(1rem, 2vw, 1.2rem); opacity: 0.95;">And I'll keep saying it, as long as you'll listen.</p>
+                <p style="margin-top: 2rem; font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 400;">Happy Birthday, Light. 🎂</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicControl">
+        <button class="music-toggle" id="musicToggle">⏸</button>
+        <div class="music-info">Now playing</div>
+    </div>
+
+    <!-- Audio Players -->
+    <audio id="audio1" loop>
+        <source src="song1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio2" loop>
+        <source src="song2.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Typewriter Effect
+        const typewriterElement = document.getElementById('typewriter');
+        const text = "Happy Birthday, Similoluwa Omo Ifedayo💙";
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
+        function typeWriter() {
+            if (!isDeleting && charIndex < text.length) {
+                typewriterElement.textContent += text.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, typeSpeed);
+            } else if (!isDeleting && charIndex === text.length) {
+                setTimeout(() => {
+                    isDeleting = true;
+                    typeWriter();
+                }, 2000);
+            } else if (isDeleting && charIndex > 0) {
+                typewriterElement.textContent = text.substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(typeWriter, 50);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                setTimeout(typeWriter, 500);
+            }
+        }
+
+        // Start typewriter effect
+        setTimeout(typeWriter, 1000);
+
+        // Letter data structure
+        const letters = [
+            {
+                number: 1,
+                title: "In the begining...",
+                date: "The First Time",
+                content: `
+                    <p>[WRITE YOUR FIRST LETTER HERE]</p>
+                    <p>This is where you express why Similoluwa is amazing for the first time.</p>
+                    <img src="./IMG_5373.jpg" alt="Similoluwa" class="letter-image">
+                    <p>[Continue your letter...]</p>
+                `,
+                signature: "With all my heart"
+            },
+            {
+                number: 2,
+                title: "Letter Two",
+                date: "The Second Time",
+                content: `
+                    <p>[WRITE YOUR SECOND LETTER HERE]</p>
+                    <p>This is the second reason why Similoluwa is amazing.</p>
+                    <img src="./IMG_5324.jpg" alt="Similoluwa" class="letter-image">
+                    <p>[Continue your letter...]</p>
+                `,
+                signature: "Always"
+            },
+            {
+                number: 3,
+                title: "Letter Three",
+                date: "The Third Time",
+                content: `
+                    <p>[WRITE YOUR SECOND LETTER HERE]</p>
+                    <p>This is the second reason why Similoluwa is amazing.</p>
+                    <img src="./IMG_5373.jpg" alt="Similoluwa" class="letter-image">
+                    <p>[Continue your letter...]</p>
+                `,
+                signature: "Truly"
+            },
+            {
+                number: 4,
+                title: "Letter Four",
+                date: "The Fourth Time",
+                content: `
+                    <p>[WRITE YOUR SECOND LETTER HERE]</p>
+                    <p>This is the second reason why Similoluwa is amazing.</p>
+                    <img src="./IMG_5495.jpg" alt="Similoluwa" class="letter-image">
+                    <p>[Continue your letter...]</p>
+                `,
+                signature: "Sincerely"
+            },
+            {
+                number: 5,
+                title: "Letter Five",
+                date: "The Fifth Time",
+                content: `
+                    <p>[WRITE YOUR SECOND LETTER HERE]</p>
+                    <p>This is the second reason why Similoluwa is amazing.</p>
+                    <img src="./IMG_5514 (1).jpg" alt="Similoluwa" class="letter-image">
+                    <p>[Continue your letter...]</p>
+                `,
+                signature: "Forever"
+            },
+            {
+                number: 6,
+                title: "Letter Six",
+                date: "The Sixth Time",
+                content: `
+                    <p>[WRITE YOUR SECOND LETTER HERE]</p>
+                    <p>This is the second reason why Similoluwa is amazing.</p>
+                    <img src="./IMG_5324.jpg" alt="Similoluwa" class="letter-image">
+                    <p>[Continue your letter...]</p>
+                `,
+                signature: "Endlessly"
+            },
+            {
+                number: 7,
+                title: "Letter Seven",
+                date: "The Seventh Time",
+                content: `
+                    <p>[WRITE YOUR SEVENTH LETTER HERE]</p>
+                    <p>The seventh and final reason in this collection...</p>
+                    <p>[Continue your letter...]</p>
+                    <p style="margin-top: 2rem; font-style: italic; text-align: center;">But this is just the beginning...</p>
+                `,
+                signature: "Until the end of time"
+            }
+        ];
+
+        // State management
+        let currentLetter = 0;
+        let unlockedLetters = [0];
+        let currentSong = 1;
+        let musicPlaying = false;
+
+        // DOM elements
+        const startScreen = document.getElementById('startScreen');
+        const letterSelection = document.getElementById('letterSelection');
+        const letterContent = document.getElementById('letterContent');
+        const finalScreen = document.getElementById('finalScreen');
+        const musicButton = document.getElementById('musicButton');
+        const musicControl = document.getElementById('musicControl');
+        const musicToggle = document.getElementById('musicToggle');
+        const audio1 = document.getElementById('audio1');
+        const audio2 = document.getElementById('audio2');
+        const letterGrid = document.getElementById('letterGrid');
+        const backButton = document.getElementById('backButton');
+
+        // Initialize
+        function init() {
+            generateLetterGrid();
+            setupEventListeners();
+        }
+
+        // Generate letter grid
+        function generateLetterGrid() {
+            letterGrid.innerHTML = '';
+            letters.forEach((letter, index) => {
+                const card = document.createElement('div');
+                card.className = `letter-card ${unlockedLetters.includes(index) ? 'unlocked' : 'locked'}`;
+                card.innerHTML = `
+                    <div class="letter-number">${letter.number}</div>
+                    <div class="letter-title">${letter.title}</div>
+                `;
+                if (unlockedLetters.includes(index)) {
+                    card.addEventListener('click', () => openLetter(index));
+                }
+                letterGrid.appendChild(card);
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            musicButton.addEventListener('click', startExperience);
+            musicToggle.addEventListener('click', toggleMusic);
+            backButton.addEventListener('click', closeLetterAndUnlockNext);
+
+            audio1.addEventListener('ended', () => switchToSong(2));
+            audio2.addEventListener('ended', () => switchToSong(1));
+        }
+
+        // Start the experience
+        function startExperience() {
+            playMusic();
+            startScreen.classList.add('hidden');
+            setTimeout(() => {
+                letterSelection.classList.add('active');
+                musicControl.classList.add('active');
+            }, 800);
+        }
+
+        // Play music
+        function playMusic() {
+            if (currentSong === 1) {
+                audio1.play().catch(e => console.log('Audio play failed:', e));
+                audio2.pause();
+            } else {
+                audio2.play().catch(e => console.log('Audio play failed:', e));
+                audio1.pause();
+            }
+            musicPlaying = true;
+            musicToggle.textContent = '⏸';
+        }
+
+        // Toggle music
+        function toggleMusic() {
+            if (musicPlaying) {
+                audio1.pause();
+                audio2.pause();
+                musicPlaying = false;
+                musicToggle.textContent = '▶';
+            } else {
+                playMusic();
+            }
+        }
+
+        // Switch between songs
+        function switchToSong(songNumber) {
+            currentSong = songNumber;
+            if (musicPlaying) {
+                playMusic();
+            }
+        }
+
+        // Open a letter
+        function openLetter(index) {
+            currentLetter = index;
+            const letter = letters[index];
+            
+            document.getElementById('letterTitle').textContent = letter.title;
+            document.getElementById('letterDate').textContent = letter.date;
+            document.getElementById('letterBody').innerHTML = letter.content + 
+                `<div class="letter-footer">${letter.signature}</div>`;
+            
+            letterSelection.classList.remove('active');
+            letterContent.classList.add('active');
+        }
+
+        // Close letter and unlock next
+        function closeLetterAndUnlockNext() {
+            letterContent.classList.remove('active');
+            
+            if (currentLetter === letters.length - 1) {
+                setTimeout(() => {
+                    finalScreen.classList.add('active');
+                }, 300);
+            } else {
+                const nextLetter = currentLetter + 1;
+                if (!unlockedLetters.includes(nextLetter)) {
+                    unlockedLetters.push(nextLetter);
+                }
+                
+                generateLetterGrid();
+                setTimeout(() => {
+                    letterSelection.classList.add('active');
+                }, 300);
+            }
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
